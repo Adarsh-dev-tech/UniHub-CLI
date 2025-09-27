@@ -1,0 +1,11 @@
+build/
+bin/
+*.o
+*.obj
+*.exe
+.DS_Store
+.vscode/
+data/resources/*
+# Keep users and profiles but do not commit any real data by default
+# Uncomment if you don't want to commit users
+# data/users/*
