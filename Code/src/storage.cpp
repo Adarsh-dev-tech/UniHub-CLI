@@ -1,56 +1,70 @@
-#include "storage.h"
-#include <filesystem>
-#include <fstream>
+/*
+    storage.cpp
 
-namespace fs = std::filesystem;
+    This source file implements file and directory utility functions for the UniHub-CLI application.
+    It provides operations for managing data and resource directories, reading and writing text files,
+    listing files in directories, and copying files. These functions abstract the underlying file system
+    interactions required for persistent storage and resource management.
+*/
 
-namespace uni {
+#include "storage.h"         // Include storage interface definitions
+#include <filesystem>        // Include filesystem operations
+#include <fstream>           // Include file stream operations
+#include <iostream>          // Include input/output stream operations
+#include <optional>          // Include optional type for return values
+#include <vector>            // Include vector type for dynamic arrays
 
-std::string dataDir() {
-    return "data";
+using namespace std; // Allows usage of standard library types without std:: prefix
+
+namespace fs = std::filesystem; // Alias for std::filesystem namespace
+
+namespace uni { // Begin namespace uni
+
+string dataDir() {
+    return "data"; // Returns the base data directory name
 }
 
-std::string resourcesDir() {
-    return dataDir() + std::string("/resources");
+string resourcesDir() {
+    return dataDir() + string("/resources"); // Returns the resources directory path
 }
 
-bool ensureDir(const std::string& path) {
+bool ensureDir(const string& path) {
     try {
-        fs::create_directories(path);
-        return true;
-    } catch (...) { return false; }
+        fs::create_directories(path); // Creates the directory and any parent directories if needed
+        return true; // Return true on success
+    } catch (...) { return false; } // Return false on exception
 }
 
-std::optional<std::string> readTextFile(const std::string& path) {
-    std::ifstream in(path);
-    if (!in) return std::nullopt;
-    std::string content((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
-    return content;
+optional<string> readTextFile(const string& path) {
+    ifstream in(path); // Open file for reading
+    if (!in) return nullopt; // Return nullopt if file can't be opened
+    string content((istreambuf_iterator<char>(in)), istreambuf_iterator<char>()); // Read entire file content
+    return content; // Return file content
 }
 
-std::optional<std::string> writeTextFile(const std::string& path, const std::string& content) {
-    std::ofstream out(path);
-    if (!out) return std::optional<std::string>("Failed to write: " + path);
-    out << content;
-    return std::nullopt;
+optional<string> writeTextFile(const string& path, const string& content) {
+    ofstream out(path); // Open file for writing
+    if (!out) return optional<string>("Failed to write: " + path); // Return error message if file can't be opened
+    out << content; // Write content to file
+    return nullopt; // Return nullopt on success
 }
 
-std::vector<std::string> listFiles(const std::string& path) {
-    std::vector<std::string> result;
+vector<string> listFiles(const string& path) {
+    vector<string> result; // Vector to store filenames
     try {
-        for (auto& p : fs::directory_iterator(path)) {
-            result.push_back(p.path().filename().string());
+        for (auto& p : fs::directory_iterator(path)) { // Iterate over files in directory
+            result.push_back(p.path().filename().string()); // Add filename to result
         }
-    } catch (...) {}
-    return result;
+    } catch (...) {} // Ignore exceptions (e.g., directory not found)
+    return result; // Return list of filenames
 }
 
-bool copyFile(const std::string& src, const std::string& dst) {
+bool copyFile(const string& src, const string& dst) {
     try {
-        ensureDir(fs::path(dst).parent_path().string());
-        fs::copy_file(src, dst, fs::copy_options::overwrite_existing);
-        return true;
-    } catch (...) { return false; }
+        ensureDir(fs::path(dst).parent_path().string()); // Ensure destination directory exists
+        fs::copy_file(src, dst, fs::copy_options::overwrite_existing); // Copy file, overwrite if exists
+        return true; // Return true on success
+    } catch (...) { return false; } // Return false on exception
 }
 
-}
+} // End namespace uni
