@@ -1,16 +1,16 @@
-# UniHub CLI - Hybrid Data Structure Implementation
+# UniHub CLI - Essential Data Structure Implementation
 
-A C++17 command-line application for NIT Trichy students to share and access academic resources, implementing a comprehensive hybrid data structure system with file-based storage.
+A C++17 command-line application for NIT Trichy students to share and access academic resources, implementing essential data structures commonly taught in college coursework.
 
 ## Features
 
-### 🏗️ **Hybrid Data Structure Architecture**
+### 🏗️ **Essential Data Structure Architecture**
 - **Hash Tables**: O(1) user lookup by email
 - **AVL Trees**: Sorted user browsing and balanced access
 - **LRU Cache**: Recent user tracking
 - **DAG (Directed Acyclic Graph)**: Subject prerequisite management
-- **B-Trees**: Efficient resource metadata indexing
-- **Tries**: Autocomplete for resource names
+- **Binary Search Trees**: Efficient resource metadata indexing
+- **Simple Arrays**: Autocomplete for resource names
 - **Priority Queues**: Popular resource ranking
 - **Graphs**: User connections and resource relationships
 - **Stacks**: Navigation history with breadcrumbs
@@ -26,7 +26,7 @@ A C++17 command-line application for NIT Trichy students to share and access aca
 - 8 resource types: Notes, Assignments, PPTs, EndSemPapers, CTs, MidSemPapers, YouTubeLinks, ReferenceBooks
 - Global resource sharing (uploads available to all students)
 - Download tracking and popularity ranking
-- Search functionality with autocomplete
+- Search functionality with simple autocomplete
 - File storage: `data/resources/{year}/{semester}/{branch}/{section}/{subject}/{type}/`
 
 ### 🏛️ **University Structure**
@@ -69,13 +69,13 @@ CSE Year 2, Semester 3, Section B:
 │   ├── storage.cpp           # File/directory utilities
 │   ├── subjects.cpp          # Subject generation & curriculum
 │   ├── resources.cpp         # Resource management
-│   └── resource_index.cpp    # B-Tree implementation
+│   └── resource_index.cpp    # Simple resource indexing
 ├── include/
 │   ├── enhanced_menu.h       # Main application interface
 │   ├── unihub_core.h         # Central data structure hub
 │   ├── user_manager.h        # Hash + AVL + LRU user system
 │   ├── academic_manager.h    # Tree + DAG academic system
-│   ├── resource_index.h      # B-Tree + Trie + Queue system
+│   ├── resource_index.h      # BST + Array + Queue system
 │   ├── data_structures.h     # Core DS implementations
 │   ├── auth.h                # Authentication interfaces
 │   ├── storage.h             # File utilities
@@ -92,7 +92,7 @@ CSE Year 2, Semester 3, Section B:
 
 1. **Login**: Hash table lookup → AVL tree for "forgot email" → LRU cache update
 2. **Subject Prerequisites**: DAG traversal to show dependency chain
-3. **Resource Search**: Trie autocomplete → B-Tree search → Priority queue ranking
+3. **Resource Search**: Simple array autocomplete → BST search → Priority queue ranking
 4. **Navigation**: Stack-based history with breadcrumb display
 5. **Popular Resources**: Priority queue maintains most downloaded content
 
@@ -102,4 +102,4 @@ Password hashing uses `std::hash` with random salts. This is suitable for educat
 
 ## License
 
-MIT
+Educational/College Project Use

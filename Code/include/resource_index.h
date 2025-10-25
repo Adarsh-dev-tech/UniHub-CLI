@@ -15,7 +15,7 @@
 namespace uni {
 
 // ============================================================================
-// Enhanced Resource Management with Multiple Data Structures
+// Enhanced Resource Management with Simple Data Structures
 // ============================================================================
 
 struct ResourceMetadata {
@@ -38,29 +38,20 @@ struct ResourceMetadata {
         // For priority queue (higher priority = more popular)
         return downloadCount < other.downloadCount;
     }
-};
-
-// Simple B-Tree node for file indexing
-struct BTreeNode {
-    std::vector<ResourceMetadata> keys;
-    std::vector<std::shared_ptr<BTreeNode>> children;
-    bool isLeaf;
-    static const int MIN_DEGREE = 3;
     
-    BTreeNode(bool leaf) : isLeaf(leaf) {}
-    
-    void insertNonFull(const ResourceMetadata& resource);
-    void splitChild(int index, std::shared_ptr<BTreeNode> child);
-    std::vector<ResourceMetadata> search(const std::string& query);
+    // For BST comparison (sort by filename)
+    bool operator<(const std::string& filename) const {
+        return this->filename < filename;
+    }
 };
 
 class ResourceIndex {
 private:
-    // B-Tree: Efficient file metadata storage and search
-    std::shared_ptr<BTreeNode> btreeRoot;
+    // BST: Efficient file metadata storage and search (instead of B-Tree)
+    BST<ResourceMetadata> resourceBST;
     
-    // Trie: Autocomplete for resource names
-    Trie resourceNameTrie;
+    // Simple Array: Autocomplete for resource names (instead of Trie)
+    SimpleAutocomplete resourceNameAutocomplete;
     
     // Priority Queue: Most popular resources
     std::priority_queue<ResourceMetadata> popularResources;
@@ -101,23 +92,19 @@ private:
     }
 
 public:
-    ResourceIndex() : btreeRoot(std::make_shared<BTreeNode>(true)) {}
+    ResourceIndex() : resourceBST([](const ResourceMetadata& a, const ResourceMetadata& b) { 
+        return a.filename < b.filename; 
+    }) {}
     
     void addResource(const ResourceMetadata& resource) {
         // Add to all data structures
         filenameIndex[resource.filename] = resource;
         
-        // Add to B-Tree
-        if (btreeRoot->keys.size() == (2 * BTreeNode::MIN_DEGREE) - 1) {
-            auto newRoot = std::make_shared<BTreeNode>(false);
-            newRoot->children.push_back(btreeRoot);
-            newRoot->splitChild(0, btreeRoot);
-            btreeRoot = newRoot;
-        }
-        btreeRoot->insertNonFull(resource);
+        // Add to BST (instead of B-Tree)
+        resourceBST.insert(resource);
         
-        // Add to Trie for autocomplete
-        resourceNameTrie.insert(resource.displayName);
+        // Add to Simple Autocomplete (instead of Trie)
+        resourceNameAutocomplete.insert(resource.displayName);
         
         // Add to popularity queue
         popularResources.push(resource);
@@ -138,7 +125,7 @@ public:
     }
     
     std::vector<std::string> autocompleteResourceName(const std::string& prefix) {
-        return resourceNameTrie.getWordsWithPrefix(prefix);
+        return resourceNameAutocomplete.getWordsWithPrefix(prefix);
     }
     
     std::vector<ResourceMetadata> getPopularResources(int count = 10) {

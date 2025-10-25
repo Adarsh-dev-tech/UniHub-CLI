@@ -117,57 +117,101 @@ public:
 };
 
 // ============================================================================
-// Trie Implementation
+// Binary Search Tree Implementation
 // ============================================================================
-class Trie {
+template<typename T>
+class BST {
 private:
-    struct TrieNode {
-        std::unordered_map<char, std::shared_ptr<TrieNode>> children;
-        bool isEndOfWord;
-        std::string fullWord;
+    struct Node {
+        T data;
+        std::shared_ptr<Node> left, right;
         
-        TrieNode() : isEndOfWord(false) {}
+        Node(const T& val) : data(val), left(nullptr), right(nullptr) {}
     };
     
-    std::shared_ptr<TrieNode> root;
+    using NodePtr = std::shared_ptr<Node>;
+    NodePtr root;
+    std::function<bool(const T&, const T&)> compare;
     
-    void collectWords(std::shared_ptr<TrieNode> node, std::vector<std::string>& results) {
+    NodePtr insert(NodePtr node, const T& data) {
+        if (!node) return std::make_shared<Node>(data);
+        
+        if (compare(data, node->data)) {
+            node->left = insert(node->left, data);
+        } else if (compare(node->data, data)) {
+            node->right = insert(node->right, data);
+        }
+        // Ignore duplicates
+        
+        return node;
+    }
+    
+    void inorder(NodePtr node, std::vector<T>& result) {
+        if (node) {
+            inorder(node->left, result);
+            result.push_back(node->data);
+            inorder(node->right, result);
+        }
+    }
+    
+    void search(NodePtr node, const std::string& query, std::vector<T>& results) {
         if (!node) return;
-        if (node->isEndOfWord) {
-            results.push_back(node->fullWord);
-        }
-        for (auto& [ch, child] : node->children) {
-            collectWords(child, results);
-        }
+        
+        // For string-based search, we need to convert T to string for comparison
+        // This is a simplified approach
+        search(node->left, query, results);
+        search(node->right, query, results);
     }
 
 public:
-    Trie() : root(std::make_shared<TrieNode>()) {}
+    BST(std::function<bool(const T&, const T&)> comp = std::less<T>()) : root(nullptr), compare(comp) {}
     
+    void insert(const T& data) { root = insert(root, data); }
+    
+    std::vector<T> getSorted() {
+        std::vector<T> result;
+        inorder(root, result);
+        return result;
+    }
+    
+    std::vector<T> searchAll() {
+        return getSorted(); // Return all elements for simple search
+    }
+};
+
+// ============================================================================
+// Simple Array-based Autocomplete
+// ============================================================================
+class SimpleAutocomplete {
+private:
+    std::vector<std::string> words;
+
+public:
     void insert(const std::string& word) {
-        auto current = root;
-        for (char ch : word) {
-            if (current->children.find(ch) == current->children.end()) {
-                current->children[ch] = std::make_shared<TrieNode>();
-            }
-            current = current->children[ch];
+        // Check if word already exists to avoid duplicates
+        if (std::find(words.begin(), words.end(), word) == words.end()) {
+            words.push_back(word);
+            // Keep the array sorted for better search performance
+            std::sort(words.begin(), words.end());
         }
-        current->isEndOfWord = true;
-        current->fullWord = word;
     }
     
     std::vector<std::string> getWordsWithPrefix(const std::string& prefix) {
-        auto current = root;
-        for (char ch : prefix) {
-            if (current->children.find(ch) == current->children.end()) {
-                return {}; // No words with this prefix
+        std::vector<std::string> results;
+        
+        // Linear search through all words to find matches
+        for (const auto& word : words) {
+            if (word.length() >= prefix.length() && 
+                word.substr(0, prefix.length()) == prefix) {
+                results.push_back(word);
             }
-            current = current->children[ch];
         }
         
-        std::vector<std::string> results;
-        collectWords(current, results);
         return results;
+    }
+    
+    std::vector<std::string> getAllWords() {
+        return words;
     }
 };
 
