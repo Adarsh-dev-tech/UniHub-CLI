@@ -11,6 +11,10 @@ TARGET = $(BIN_DIR)/unihub
 SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRCS))
 
+.PHONY: all clean run
+
+all: $(TARGET)
+
 $(TARGET): $(OBJS) | $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) -I$(INC_DIR) $(OBJS) -o $@ $(LDFLAGS)
 
@@ -22,8 +26,6 @@ $(BUILD_DIR):
 
 $(BIN_DIR):
 	@mkdir -p $(BIN_DIR)
-
-.PHONY: clean run
 
 run: $(TARGET)
 	$(TARGET)
