@@ -97,12 +97,12 @@ private:
         addSubject("CSE12E", "Digital Logic", "Prof. Iyer", 1, 2, "CSE", 'A', {"CSE11E"}, 3);
         
         // Year 2 Semester 3 - Custom curriculum for Section B
-        addSubject("CSE23A", "Computer Organization", "Prof. Mala", 2, 3, "CSE", 'B', {"CSE12E"}, 4);
-        addSubject("CSE23B", "Principles of Programming Languages", "Prof. Bala", 2, 3, "CSE", 'B', {"CSE12A"}, 3);
-        addSubject("CSE23C", "Data Structures", "Prof. Oswald", 2, 3, "CSE", 'B', {"CSE12A"}, 4);
-        addSubject("CSE23D", "Probability and Operations Research", "Prof. Shivaranjini", 2, 3, "CSE", 'B', {"CSE12B"}, 3);
-        addSubject("CSE23E", "Combinatorics and Graph Theory", "Prof. Pavan", 2, 3, "CSE", 'B', {"CSE12B"}, 3);
-        addSubject("CSE23F", "Digital Systems Design", "Prof. Shameedha", 2, 3, "CSE", 'B', {"CSE12E"}, 4);
+        addSubject("CSPC34", "Computer Organization", "Prof. Mala", 2, 3, "CSE", 'B', {"CSPC34"}, 4);
+        addSubject("CSPC31", "Principles of Programming Languages", "Prof. Bala", 2, 3, "CSE", 'B', {"CSPC31"}, 3);
+        addSubject("CSPC32", "Data Structures", "Prof. Oswald", 2, 3, "CSE", 'B', {"CSPC32"}, 4);
+        addSubject("MAIR31", "Probability and Operations Research", "Prof. Shivaranjini", 2, 3, "CSE", 'B', {"MAIR31"}, 3);
+        addSubject("CSPE01", "Combinatorics and Graph Theory", "Prof. Pavan", 2, 3, "CSE", 'B', {"CSPE01"}, 3);
+        addSubject("CSPC33", "Digital Systems Design", "Prof. Shameedha", 2, 3, "CSE", 'B', {"CSPC33"}, 4);
         
         // Year 2 Semester 4
         addSubject("CSE24A", "Algorithms", "Prof. Sharma", 2, 4, "CSE", 'A', {"CSE23C"}, 4);
