@@ -1,1 +1,0 @@
-Sarvesh,Kaijkar,106124048@nitt.edu,2,3,CSE,B

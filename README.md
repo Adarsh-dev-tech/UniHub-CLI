@@ -174,7 +174,7 @@ UniHub-CLI/
 │   │   ├── unihub_core.h             # Central data hub
 │   │   ├── user_manager.h            # Hybrid user management
 │   │   ├── academic_manager.h        # Tree + DAG academics
-│   │   ├── resource_index.h          # B-Tree + Trie + Queue
+│   │   ├── resource_index.h          # BST + Array + Queue system
 │   │   ├── data_structures.h         # Core implementations
 │   │   ├── auth.h                    # Authentication interfaces
 │   │   ├── storage.h                 # Storage utilities
@@ -202,7 +202,7 @@ UniHub-CLI/
 │   ├── .vscode/                      # VS Code configuration
 │   │   └── tasks.json                # Build/run tasks
 │   │
-│   ├── Makefile                      # Build configuration
+│   ├── Makefile (delegates to top-level)  # Kept for compatibility; top-level Makefile is primary
 │   ├── .gitignore                    # Git ignore rules
 │   └── README.md                     # Technical documentation
 │
@@ -254,9 +254,9 @@ data/resources/
 ```bash
 # Clone the repository
 git clone https://github.com/Adarsh-dev-tech/UniHub-CLI.git
-cd UniHub-CLI/Code
+cd UniHub-CLI
 
-# Build the application
+# Build the application (run at repository root)
 make
 
 # Run the application

@@ -2,10 +2,10 @@ CXX = g++
 CXXFLAGS = -std=gnu++17 -O2 -Wall -Wextra -Wpedantic
 LDFLAGS = 
 
-SRC_DIR = src
-INC_DIR = include
-BUILD_DIR = build
-BIN_DIR = bin
+SRC_DIR = Code/src
+INC_DIR = Code/include
+BUILD_DIR = Code/build
+BIN_DIR = Code/bin
 TARGET = $(BIN_DIR)/unihub
 
 SRCS = $(wildcard $(SRC_DIR)/*.cpp)
